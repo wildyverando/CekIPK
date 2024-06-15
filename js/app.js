@@ -106,7 +106,7 @@ function hitungipk() {
 
 	var selamat
 	if (ipk.toFixed(1) >= 4) {
-		selamat = '<img src="img/happy.jpg" width="150" height="150"></img><brSelamat nilai anda sangat memuaskan, jangan lupa pertahankan nilai anda.';
+		selamat = '<img src="img/happy.jpg" width="150" height="150"></img><br>Selamat nilai anda sangat memuaskan, jangan lupa pertahankan nilai anda.';
 	} else if (ipk.toFixed(1) >= 3) {
 		selamat = '<img src="img/stillgood.jpg" width="150" height="150"></img><br>Nilai kamu lumayan memuaskan, jangan lupa tetap belajar dan tingkatkan lagi di semester selanjutnya.';
 	} else if (ipk.toFixed(1) >= 2) {
