@@ -35,8 +35,8 @@ function ValidNIM() {
 
 function validateInput(inputElement) {
 	let value = inputElement.value.trim();
-	let regex = /^(\d{1,2}([.,]\d{0,2})?|100([.,]0{1,2})?)$/;
-	if (!regex.test(value) || parseInt(value) < 0 || parseInt(value) > 100) {
+	let regex = /^(100|[1-9]?\d([.,]\d{1,2})?)$/;
+	if (!regex.test(value) || parseFloat(value.replace(',', '.')) < 0 || parseFloat(value.replace(',', '.')) > 100) {
 		inputElement.value = '0'; // balikin jadi nilai 0
 		Swal.fire({
 			icon: 'error',
@@ -87,11 +87,23 @@ function hitungipk() {
 		nilai.html(formattedNilaiAkhir);
 
 		var grade = $(this).find('.grade');
-		if (roundedNilaiAkhir >= 85) grade.html('A');
-		else if (roundedNilaiAkhir >= 75) grade.html('B');
-		else if (roundedNilaiAkhir >= 60) grade.html('C');
-		else if (roundedNilaiAkhir >= 35) grade.html('D');
-		else grade.html('E');
+		if (roundedNilaiAkhir >= 80 && roundedNilaiAkhir <= 100) {
+		    grade.html('A');
+		} else if (roundedNilaiAkhir >= 73 && roundedNilaiAkhir < 80) {
+		    grade.html('B+');
+		} else if (roundedNilaiAkhir >= 66 && roundedNilaiAkhir < 73) {
+		    grade.html('B');
+		} else if (roundedNilaiAkhir >= 58 && roundedNilaiAkhir < 66) {
+		    grade.html('C+');
+		} else if (roundedNilaiAkhir >= 51 && roundedNilaiAkhir < 58) {
+		    grade.html('C');
+		} else if (roundedNilaiAkhir >= 41 && roundedNilaiAkhir < 51) {
+		    grade.html('D');
+		} else if (roundedNilaiAkhir >= 0 && roundedNilaiAkhir < 41) {
+		    grade.html('E');
+		} else {
+		    grade.html('Invalid grade');
+		}
 
 		total_sks += sks;
 
@@ -179,11 +191,23 @@ $(document).ready(function () {
 		nilai.html(formattedNilaiAkhir);
 
 		var grade = $(this).closest('tr').find('.grade');
-		if (roundedNilaiAkhir >= 85) grade.html('A');
-		else if (roundedNilaiAkhir >= 75) grade.html('B');
-		else if (roundedNilaiAkhir >= 60) grade.html('C');
-		else if (roundedNilaiAkhir >= 35) grade.html('D');
-		else grade.html('E');
+		if (roundedNilaiAkhir >= 80 && roundedNilaiAkhir <= 100) {
+		    grade.html('A');
+		} else if (roundedNilaiAkhir >= 73 && roundedNilaiAkhir < 80) {
+		    grade.html('B+');
+		} else if (roundedNilaiAkhir >= 66 && roundedNilaiAkhir < 73) {
+		    grade.html('B');
+		} else if (roundedNilaiAkhir >= 58 && roundedNilaiAkhir < 66) {
+		    grade.html('C+');
+		} else if (roundedNilaiAkhir >= 51 && roundedNilaiAkhir < 58) {
+		    grade.html('C');
+		} else if (roundedNilaiAkhir >= 41 && roundedNilaiAkhir < 51) {
+		    grade.html('D');
+		} else if (roundedNilaiAkhir >= 0 && roundedNilaiAkhir < 41) {
+		    grade.html('E');
+		} else {
+		    grade.html('Invalid grade');
+		}
 
 	}).on('click', '.tombolhapus', function () {
 		Swal.fire({
