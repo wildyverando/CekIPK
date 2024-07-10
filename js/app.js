@@ -124,7 +124,7 @@ function hitungipk() {
 	} else if (ipk.toFixed(1) >= 2) {
 		selamat = '<img src="img/sad.jpg" width="150" height="150"></img><br>Nilai anda kurang bagus, semangat dan jangan lupa tingkatkan di semester selanjutnya.';
 	} else {
-		selamat = '<img src="img/angry.jpg" width="150" height="150"></img><br>Nilai kamu sangat memprihatinkan, perbanyak belajar dan konsultasi dengan dosen untuk memperbaiki nilai.';
+		selamat = '<img src="img/angry.jpg" width="150" height="150"></img><br>Nilai kamu sangat memprihatinkan, perbanyak belajar main game supaya kamu bisa tahan sampai semester 11.'; // canda saja 😂😂
 	}
 
 	$('#loading .bar').animate({ width: '100%' }, 500);
