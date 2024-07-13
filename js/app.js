@@ -1,13 +1,13 @@
 window.kode = `<tr>
   <td><input type="text" class="matkul w-full p-2 border-b border-gray-300 rounded text-center"></td>
-  <td><input type="tel" class="sks w-full p-2 border-b border-gray-300 rounded text-center" value="0" min="2" max="4"></td>
-  <td><input type="tel" class="tugas w-full p-2 border-b border-gray-300 rounded text-center" value="0" min="0" max="100"></td>
-  <td><input type="tel" class="uts w-full p-2 border-b border-gray-300 rounded text-center" value="0" min="0" max="100"></td>
-  <td><input type="tel" class="uas w-full p-2 border-b border-gray-300 rounded text-center" value="0" min="0" max="100"></td>
+  <td><input type="tel" class="sks w-full p-2 border-b border-gray-300 rounded text-center" value="" min="0" max="50"></td>
+  <td><input type="tel" class="tugas w-full p-2 border-b border-gray-300 rounded text-center" value="" min="0" max="100"></td>
+  <td><input type="tel" class="uts w-full p-2 border-b border-gray-300 rounded text-center" value="" min="0" max="100"></td>
+  <td><input type="tel" class="uas w-full p-2 border-b border-gray-300 rounded text-center" value="" min="0" max="100"></td>
   <td>
     <select class="sistem-hitung w-full p-2 border-b border-gray-300 rounded text-center">
-      <option value="1">TM 50%, UTS 20%, UAS 30%</option>
-      <option value="2">TM 30%, UTS 30%, UAS 40%</option>
+	  <option value="1">TM 30%, UTS 30%, UAS 40%</option>
+      <option value="2">TM 50%, UTS 20%, UAS 30%</option>
     </select>
   </td>
   <td class="nilai p-2 text-center"></td>
@@ -34,112 +34,120 @@ function ValidNIM() {
 }
 
 function validateInput(inputElement) {
-	let value = inputElement.value.trim();
-	let regex = /^(100|[1-9]?\d([.,]\d{1,2})?)$/;
-	if (!regex.test(value) || parseFloat(value.replace(',', '.')) < 0 || parseFloat(value.replace(',', '.')) > 100) {
-		inputElement.value = '0'; // balikin jadi nilai 0
-		Swal.fire({
-			icon: 'error',
-			title: 'Oops...',
-			text: 'Nilai harus dari 1-100 !',
-			confirmButtonColor: '#db2e2e',
-		});
-	}
+    let value = inputElement.value.trim();
+    if (value === '') {
+        value = '0';
+    }
+    let regex = /^(100|[1-9]?\d([.,]\d{1,2})?)$/;
+    if (!regex.test(value) || parseFloat(value.replace(',', '.')) < 0 || parseFloat(value.replace(',', '.')) > 100) {
+        inputElement.value = '0'; // set nilai awal jadi 0
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Nilai harus dari 0-100 !',
+            confirmButtonColor: '#db2e2e',
+        });
+    }
 }
 
 function hitungipk() {
-	var total_matkul = $('table#nilai tbody tr').length;
-	var total_sks = 0;
-	var total_nilai = 0;
-	var nama = $('#nama').val();
-	var nim = $('#nim').val();
+    var total_matkul = $('table#nilai tbody tr').length;
+    var total_sks = 0;
+    var total_poin = 0;
+    var nama = $('#nama').val();
+    var nim = $('#nim').val();
 
-	if (nama.trim().length == 0 || nim.trim().length == 0) {
-		Swal.fire({
-			icon: 'error',
-			title: 'Oops...',
-			text: 'NIM dan Nama harus di isi ya!',
-			confirmButtonColor: '#db2e2e',
-		});
-		return;
-	}
+    if (nama.trim().length == 0 || nim.trim().length == 0) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'NIM dan Nama harus di isi ya!',
+            confirmButtonColor: '#db2e2e',
+        });
+        return;
+    }
 
-	$('#result').hide();
+    $('#result').hide();
 
-	$('table#nilai tbody tr').each(function () {
-		var sks = parseInt($(this).find('.sks').val());
-		var tugas = $(this).find('.tugas').val().replace(',', '.');
-		var uts = $(this).find('.uts').val().replace(',', '.');
-		var uas = $(this).find('.uas').val().replace(',', '.');
-		var sistem = $(this).find('.sistem-hitung').val();
+    $('table#nilai tbody tr').each(function () {
+        var sks = parseInt($(this).find('.sks').val());
+        var tugas = parseFloat($(this).find('.tugas').val().replace(',', '.'));
+        var uts = parseFloat($(this).find('.uts').val().replace(',', '.'));
+        var uas = parseFloat($(this).find('.uas').val().replace(',', '.'));
+        var sistem = $(this).find('.sistem-hitung').val();
 
-		var nilaiAkhir;
-		if (sistem == '1') {
-			nilaiAkhir = (tugas * 0.5) + (uts * 0.2) + (uas * 0.3);
-		} else {
-			nilaiAkhir = (tugas * 0.3) + (uts * 0.3) + (uas * 0.4);
-		}
+        var nilaiAkhir;
+        if (sistem == '1') {
+            nilaiAkhir = (tugas * 0.3) + (uts * 0.3) + (uas * 0.4);
+        } else {
+            nilaiAkhir = (tugas * 0.5) + (uts * 0.2) + (uas * 0.3);
+        }
 
-		var roundedNilaiAkhir = Math.round(nilaiAkhir * 10) / 10;
-		var formattedNilaiAkhir = roundedNilaiAkhir.toLocaleString('id-ID', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+        var roundedNilaiAkhir = Math.round(nilaiAkhir * 10) / 10;
+        var formattedNilaiAkhir = roundedNilaiAkhir.toLocaleString('id-ID', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 
-		var nilai = $(this).find('.nilai');
-		nilai.html(formattedNilaiAkhir);
+        var nilai = $(this).find('.nilai');
+        nilai.html(formattedNilaiAkhir);
 
-		var grade = $(this).find('.grade');
-		if (roundedNilaiAkhir >= 80 && roundedNilaiAkhir <= 100) {
-		    grade.html('A');
-		} else if (roundedNilaiAkhir >= 73 && roundedNilaiAkhir < 80) {
-		    grade.html('B+');
-		} else if (roundedNilaiAkhir >= 66 && roundedNilaiAkhir < 73) {
-		    grade.html('B');
-		} else if (roundedNilaiAkhir >= 58 && roundedNilaiAkhir < 66) {
-		    grade.html('C+');
-		} else if (roundedNilaiAkhir >= 51 && roundedNilaiAkhir < 58) {
-		    grade.html('C');
-		} else if (roundedNilaiAkhir >= 41 && roundedNilaiAkhir < 51) {
-		    grade.html('D');
-		} else if (roundedNilaiAkhir >= 0 && roundedNilaiAkhir < 41) {
-		    grade.html('E');
-		} else {
-		    grade.html('Invalid grade');
-		}
+        var grade = $(this).find('.grade');
+        var poin;
+        if (roundedNilaiAkhir >= 80 && roundedNilaiAkhir <= 100) {
+            grade.html('A');
+            poin = 4;
+        } else if (roundedNilaiAkhir >= 73 && roundedNilaiAkhir < 80) {
+            grade.html('B+');
+            poin = 3.5;
+        } else if (roundedNilaiAkhir >= 66 && roundedNilaiAkhir < 73) {
+            grade.html('B');
+            poin = 3;
+        } else if (roundedNilaiAkhir >= 58 && roundedNilaiAkhir < 66) {
+            grade.html('C+');
+            poin = 2.5;
+        } else if (roundedNilaiAkhir >= 51 && roundedNilaiAkhir < 58) {
+            grade.html('C');
+            poin = 2;
+        } else if (roundedNilaiAkhir >= 41 && roundedNilaiAkhir < 51) {
+            grade.html('D');
+            poin = 1;
+        } else if (roundedNilaiAkhir >= 0 && roundedNilaiAkhir < 41) {
+            grade.html('E');
+            poin = 0;
+        } else {
+            grade.html('K');
+            poin = 0;
+        }
 
-		total_sks += sks;
+        total_sks += sks;
+        total_poin += (sks * poin);
+    });
 
-		if (grade.text() == 'A') total_nilai += (sks * 4);
-		else if (grade.text() == 'B') total_nilai += (sks * 3);
-		else if (grade.text() == 'C') total_nilai += (sks * 2);
-		else if (grade.text() == 'D') total_nilai += (sks * 1);
-		else total_nilai += (sks * 0);
-	});
+    var ipk = total_poin / total_sks;
+	console.log(total_poin)
 
-	var ipk = total_nilai / total_sks;
+    var selamat;
+    if (ipk.toFixed(1) >= 4) {
+        selamat = '<img src="img/happy.jpg" width="150" height="150"></img><br>Selamat nilai anda sangat memuaskan, jangan lupa pertahankan nilai anda.';
+    } else if (ipk.toFixed(1) >= 3) {
+        selamat = '<img src="img/stillgood.jpg" width="150" height="150"></img><br>Nilai kamu lumayan memuaskan, jangan lupa tetap belajar dan tingkatkan lagi di semester selanjutnya.';
+    } else if (ipk.toFixed(1) >= 2) {
+        selamat = '<img src="img/sad.jpg" width="150" height="150"></img><br>Nilai anda kurang bagus, semangat dan jangan lupa tingkatkan di semester selanjutnya.';
+    } else {
+        selamat = '<img src="img/angry.jpg" width="150" height="150"></img><br>Nilai kamu sangat memprihatinkan, jangan lupa belajar lagi untuk meningkatkan nilai di semester selanjutnya.';
+    }
 
-	var selamat
-	if (ipk.toFixed(1) >= 4) {
-		selamat = '<img src="img/happy.jpg" width="150" height="150"></img><br>Selamat nilai anda sangat memuaskan, jangan lupa pertahankan nilai anda.';
-	} else if (ipk.toFixed(1) >= 3) {
-		selamat = '<img src="img/stillgood.jpg" width="150" height="150"></img><br>Nilai kamu lumayan memuaskan, jangan lupa tetap belajar dan tingkatkan lagi di semester selanjutnya.';
-	} else if (ipk.toFixed(1) >= 2) {
-		selamat = '<img src="img/sad.jpg" width="150" height="150"></img><br>Nilai anda kurang bagus, semangat dan jangan lupa tingkatkan di semester selanjutnya.';
-	} else {
-		selamat = '<img src="img/angry.jpg" width="150" height="150"></img><br>Nilai kamu sangat memprihatinkan, perbanyak belajar main game supaya kamu bisa tahan sampai semester 11.'; // canda saja 😂😂
-	}
-
-	$('#loading .bar').animate({ width: '100%' }, 500);
-	setTimeout(function () {
-		$('#result_nim').html(nim);
-		$('#result_nama').html(nama);
-		$('#result_sks').html(total_sks);
-		$('#result_matkul').html(total_matkul);
-		$('#result_ipk').html(ipk.toFixed(2).replace('.', ','));
-		$('#selamat').html(selamat);
-		$('#result').fadeIn('slow');
-	}, 1500);
-	setTimeout(function () {
-		$('#loading .bar').animate({ width: '0%' }, 500);
-	}, 2500);
+    $('#loading .bar').animate({ width: '100%' }, 500);
+    setTimeout(function () {
+        $('#result_nim').html(nim);
+        $('#result_nama').html(nama);
+        $('#result_sks').html(total_sks);
+        $('#result_matkul').html(total_matkul);
+        $('#result_ipk').html(ipk.toFixed(2).replace('.', ','));
+        $('#selamat').html(selamat);
+        $('#result').fadeIn('slow');
+    }, 1500);
+    setTimeout(function () {
+        $('#loading .bar').animate({ width: '0%' }, 500);
+    }, 2500);
 }
 
 function reset() {
@@ -179,9 +187,9 @@ $(document).ready(function () {
 
 		var nilaiAkhir;
 		if (sistem == '1') {
-			nilaiAkhir = (tugas * 0.5) + (uts * 0.2) + (uas * 0.3);
-		} else {
 			nilaiAkhir = (tugas * 0.3) + (uts * 0.3) + (uas * 0.4);
+		} else {
+			nilaiAkhir = (tugas * 0.5) + (uts * 0.2) + (uas * 0.3);
 		}
 
 		var roundedNilaiAkhir = Math.round(nilaiAkhir * 10) / 10;
@@ -206,7 +214,7 @@ $(document).ready(function () {
 		} else if (roundedNilaiAkhir >= 0 && roundedNilaiAkhir < 41) {
 		    grade.html('E');
 		} else {
-		    grade.html('Invalid grade');
+		    grade.html('F');
 		}
 
 	}).on('click', '.tombolhapus', function () {
