@@ -9,4 +9,4 @@ Untuk mencoba kalkulator ini bisa langsung cek di: [cekipk](http://cekipk.wildyv
 - Program ini merupakan hasil pengembangan ulang dari https://github.com/januridp/kalkulator-ipk
 
 ## License
-Project ini berlisensi atas GPLv3
+Project ini berlisensi atas MIT License
